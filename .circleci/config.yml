@@ -5,9 +5,9 @@ jobs: # a collection of steps
       - image: circleci/node:12.8.0 # ...with this image as the primary container; this is where all `steps` will run
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
-      # - run:
-      #     name: Update npm
-      #     command: 'sudo npm install -g npm@6.12.0'
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npm@6.12.0'
       - run:
           name: Install elm-format
           command: 'sudo npm install elm-format'
