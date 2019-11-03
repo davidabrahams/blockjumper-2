@@ -21,7 +21,7 @@ init _ =
 
 subscriptions : Model -> Sub Msg
 subscriptions m =
-    onAnimationFrame (\posix -> TimeMsg (posixToMillis posix))
+    posixToMillis >> TimeMsg |> onAnimationFrame
 
 
 type alias Model =
