@@ -5,21 +5,25 @@ import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 
 
-{-| no flags. model is Int, message is Msg
+{-| no flags. model is Model, message is Msg
 -}
-main : Program () Int Msg
+main : Program () Model Msg
 main =
     Browser.element { init = init, subscriptions = subscriptions, update = update, view = view }
 
 
-init : () -> ( Int, Cmd Msg )
+init : () -> ( Model, Cmd Msg )
 init _ =
-    ( 0, Cmd.none )
+    ( { count = 0, time = 0 }, Cmd.none )
 
 
-subscriptions : Int -> Sub Msg
+subscriptions : Model -> Sub Msg
 subscriptions i =
     Sub.none
+
+
+type alias Model =
+    { count : Int, time : Float }
 
 
 type Msg
@@ -27,20 +31,20 @@ type Msg
     | Decrement
 
 
-update : Msg -> Int -> ( Int, Cmd Msg )
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Increment ->
-            ( model + 1, Cmd.none )
+            ( { model | count = model.count + 1 }, Cmd.none )
 
         Decrement ->
-            ( model - 1, Cmd.none )
+            ( { model | count = model.count - 1 }, Cmd.none )
 
 
-view : Int -> Html Msg
+view : Model -> Html Msg
 view model =
     div []
         [ button [ onClick Decrement ] [ text "-" ]
-        , div [] [ text (String.fromInt model) ]
+        , div [] [ text (String.fromInt model.count) ]
         , button [ onClick Increment ] [ text "+" ]
         ]
