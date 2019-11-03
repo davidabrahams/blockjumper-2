@@ -18,5 +18,5 @@ jobs: # a collection of steps
           name: Run elm-format
           command: './node_modules/.bin/elm-format frontend --validate'
       - run:
-          name: Run elm-make
-          command: 'elm make frontend/Main.elm'
+          name: Make index.html
+          command: 'make public/index.html'
