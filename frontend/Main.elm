@@ -5,6 +5,9 @@ import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 
 
+{-| no flags. model is Unit, message is Msg
+-}
+main : Program () Int Msg
 main =
     Browser.sandbox { init = 0, update = update, view = view }
 
@@ -14,6 +17,7 @@ type Msg
     | Decrement
 
 
+update : Msg -> Int -> Int
 update msg model =
     case msg of
         Increment ->
@@ -23,6 +27,7 @@ update msg model =
             model - 1
 
 
+view : Int -> Html Msg
 view model =
     div []
         [ button [ onClick Decrement ] [ text "-" ]

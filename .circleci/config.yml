@@ -14,3 +14,6 @@ jobs: # a collection of steps
       - run: # run tests
           name: Run elm-format
           command: './node_modules/.bin/elm-format frontend --validate'
+      - run:
+          name: Run elm-make
+          command: 'elm make frontend/Main.elm'
