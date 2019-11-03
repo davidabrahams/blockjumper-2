@@ -21,7 +21,7 @@ init _ =
 
 subscriptions : Model -> Sub Msg
 subscriptions m =
-    onAnimationFrame (\posix -> TimeTag (posixToMillis posix))
+    onAnimationFrame (\posix -> TimeMsg (posixToMillis posix))
 
 
 type alias Model =
@@ -38,28 +38,28 @@ type alias CurrentTimeMillis =
 
 
 type Msg
-    = ButtonMsgTag ButtonMsg
-    | TimeTag CurrentTimeMillis
+    = ButtonMsg ButtonMsg
+    | TimeMsg CurrentTimeMillis
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ButtonMsgTag Increment ->
+        ButtonMsg Increment ->
             ( { model | count = model.count + 1 }, Cmd.none )
 
-        ButtonMsgTag Decrement ->
+        ButtonMsg Decrement ->
             ( { model | count = model.count - 1 }, Cmd.none )
 
-        TimeTag currTime ->
+        TimeMsg currTime ->
             ( { model | time = currTime }, Cmd.none )
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ button [ onClick (ButtonMsgTag Decrement) ] [ text "-" ]
+        [ button [ onClick (ButtonMsg Decrement) ] [ text "-" ]
         , div [] [ text (String.fromInt model.count) ]
-        , button [ onClick (ButtonMsgTag Increment) ] [ text "+" ]
+        , button [ onClick (ButtonMsg Increment) ] [ text "+" ]
         , div [] [ text (String.fromFloat (toFloat model.time / 1000.0)) ]
         ]
