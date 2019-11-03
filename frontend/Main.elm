@@ -1,8 +1,10 @@
 module Main exposing (Msg(..), main, update, view)
 
 import Browser
+import Browser.Events exposing (onAnimationFrame)
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
+import Time exposing (posixToMillis)
 
 
 {-| no flags. model is Model, message is Msg
@@ -18,12 +20,12 @@ init _ =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions i =
-    Sub.none
+subscriptions m =
+    onAnimationFrame (\posix -> TimeTag (posixToMillis posix))
 
 
 type alias Model =
-    { count : Int, time : Float }
+    { count : Int, time : Int }
 
 
 type ButtonMsg
@@ -31,13 +33,13 @@ type ButtonMsg
     | Decrement
 
 
-type alias TimeElapsed =
-    Float
+type alias CurrentTimeMillis =
+    Int
 
 
 type Msg
     = ButtonMsgTag ButtonMsg
-    | TimeElapsedTag TimeElapsed
+    | TimeTag CurrentTimeMillis
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -49,8 +51,8 @@ update msg model =
         ButtonMsgTag Decrement ->
             ( { model | count = model.count - 1 }, Cmd.none )
 
-        TimeElapsedTag elapsed ->
-            ( { model | count = model.count + 1 }, Cmd.none )
+        TimeTag currTime ->
+            ( { model | time = currTime }, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -59,4 +61,5 @@ view model =
         [ button [ onClick (ButtonMsgTag Decrement) ] [ text "-" ]
         , div [] [ text (String.fromInt model.count) ]
         , button [ onClick (ButtonMsgTag Increment) ] [ text "+" ]
+        , div [] [ text (String.fromFloat (toFloat model.time / 1000.0)) ]
         ]
