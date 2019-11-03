@@ -26,25 +26,37 @@ type alias Model =
     { count : Int, time : Float }
 
 
-type Msg
+type ButtonMsg
     = Increment
     | Decrement
+
+
+type alias TimeElapsed =
+    Float
+
+
+type Msg
+    = ButtonMsgTag ButtonMsg
+    | TimeElapsedTag TimeElapsed
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Increment ->
+        ButtonMsgTag Increment ->
             ( { model | count = model.count + 1 }, Cmd.none )
 
-        Decrement ->
+        ButtonMsgTag Decrement ->
             ( { model | count = model.count - 1 }, Cmd.none )
+
+        TimeElapsedTag elapsed ->
+            ( { model | count = model.count + 1 }, Cmd.none )
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ button [ onClick Decrement ] [ text "-" ]
+        [ button [ onClick (ButtonMsgTag Decrement) ] [ text "-" ]
         , div [] [ text (String.fromInt model.count) ]
-        , button [ onClick Increment ] [ text "+" ]
+        , button [ onClick (ButtonMsgTag Increment) ] [ text "+" ]
         ]
