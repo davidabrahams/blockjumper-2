@@ -5,11 +5,21 @@ import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 
 
-{-| no flags. model is Unit, message is Msg
+{-| no flags. model is Int, message is Msg
 -}
 main : Program () Int Msg
 main =
-    Browser.sandbox { init = 0, update = update, view = view }
+    Browser.element { init = init, subscriptions = subscriptions, update = update, view = view }
+
+
+init : () -> ( Int, Cmd Msg )
+init _ =
+    ( 0, Cmd.none )
+
+
+subscriptions : Int -> Sub Msg
+subscriptions i =
+    Sub.none
 
 
 type Msg
@@ -17,14 +27,14 @@ type Msg
     | Decrement
 
 
-update : Msg -> Int -> Int
+update : Msg -> Int -> ( Int, Cmd Msg )
 update msg model =
     case msg of
         Increment ->
-            model + 1
+            ( model + 1, Cmd.none )
 
         Decrement ->
-            model - 1
+            ( model - 1, Cmd.none )
 
 
 view : Int -> Html Msg
