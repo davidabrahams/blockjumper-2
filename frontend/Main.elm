@@ -93,14 +93,3 @@ view model =
 
 clearScreen =
     shapes [ fill colorWhilePlaying ] [ rect ( 0, 0 ) width height ]
-
-
-
--- view model =
--- div []
---     [ button [ onClick (ButtonMsg Decrement) ] [ text "-" ]
---     , div [] [ text (String.fromInt model.count) ]
---     , button [ onClick (ButtonMsg Increment) ] [ text "+" ]
---     , div [] [ text (String.fromFloat (toFloat model.time / 1000.0)) ]
---     , box
---     ]
