@@ -73,7 +73,7 @@ update msg model =
 
 
 view : Model -> Html Msg
-view { count } =
+view model =
     div
         [ style "display" "flex"
         , style "justify-content" "center"
@@ -84,6 +84,10 @@ view { count } =
             [ style "border" "10px solid rgba(0,0,0,0.1)" ]
             [ clearScreen
             ]
+        , button [ onClick (ButtonMsg Decrement) ] [ text "-" ]
+        , div [] [ text (String.fromInt model.count) ]
+        , button [ onClick (ButtonMsg Increment) ] [ text "+" ]
+        , div [] [ text (String.fromFloat (toFloat model.time / 1000.0)) ]
         ]
 
 
