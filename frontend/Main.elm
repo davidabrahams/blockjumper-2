@@ -2,7 +2,11 @@ module Main exposing (Msg(..), main, update, view)
 
 import Browser
 import Browser.Events exposing (onAnimationFrame)
+import Canvas exposing (rect, shapes)
+import Canvas.Settings exposing (fill)
+import Color
 import Html exposing (Html, button, div, text)
+import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Time exposing (posixToMillis)
 
@@ -14,6 +18,19 @@ main =
     Browser.element { init = init, subscriptions = subscriptions, update = update, view = view }
 
 
+width =
+    800
+
+
+height =
+    600
+
+
+colorWhilePlaying : Color.Color
+colorWhilePlaying =
+    Color.rgb255 139 109 154
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { count = 0, time = 0 }, Cmd.none )
@@ -21,7 +38,7 @@ init _ =
 
 subscriptions : Model -> Sub Msg
 subscriptions m =
-    onAnimationFrame (\posix -> TimeMsg (posixToMillis posix))
+    posixToMillis >> TimeMsg |> onAnimationFrame
 
 
 type alias Model =
@@ -57,9 +74,22 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ button [ onClick (ButtonMsg Decrement) ] [ text "-" ]
+    div
+        [ style "display" "flex"
+        , style "justify-content" "center"
+        , style "align-items" "center"
+        ]
+        [ Canvas.toHtml
+            ( width, height )
+            [ style "border" "10px solid rgba(0,0,0,0.1)" ]
+            [ clearScreen
+            ]
+        , button [ onClick (ButtonMsg Decrement) ] [ text "-" ]
         , div [] [ text (String.fromInt model.count) ]
         , button [ onClick (ButtonMsg Increment) ] [ text "+" ]
         , div [] [ text (String.fromFloat (toFloat model.time / 1000.0)) ]
         ]
+
+
+clearScreen =
+    shapes [ fill colorWhilePlaying ] [ rect ( 0, 0 ) width height ]
