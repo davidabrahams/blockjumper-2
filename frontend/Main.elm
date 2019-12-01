@@ -76,20 +76,25 @@ view : Model -> Html Msg
 view model =
     div
         [ style "display" "flex"
+        , style "flex-direction" "column"
         , style "justify-content" "center"
         , style "align-items" "center"
         ]
         [ Canvas.toHtml
             ( width, height )
             [ style "border" "10px solid rgba(0,0,0,0.1)" ]
-            [ clearScreen
+            [ box
             ]
-        , button [ onClick (ButtonMsg Decrement) ] [ text "-" ]
-        , div [] [ text (String.fromInt model.count) ]
-        , button [ onClick (ButtonMsg Increment) ] [ text "+" ]
-        , div [] [ text (String.fromFloat (toFloat model.time / 1000.0)) ]
+        , div
+            []
+            [ button [ onClick (ButtonMsg Decrement) ] [ text "-" ]
+            , div [] [ text (String.fromInt model.count) ]
+            , button [ onClick (ButtonMsg Increment) ] [ text "+" ]
+            , div [] [ text (String.fromFloat (toFloat model.time / 1000.0)) ]
+            ]
         ]
 
 
-clearScreen =
+box : Canvas.Renderable
+box =
     shapes [ fill colorWhilePlaying ] [ rect ( 0, 0 ) width height ]
